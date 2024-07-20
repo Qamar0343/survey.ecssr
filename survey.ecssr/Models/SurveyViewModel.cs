@@ -27,4 +27,10 @@ public class OptionsViewModel
     public string? Text { get; set; }
     public bool IsDeleted { get; set; }
 }
+public class AnswerViewModel
+{
+    public Guid Id { get; set; }
+    public string AnswerText { get; set; }
+}
+
 

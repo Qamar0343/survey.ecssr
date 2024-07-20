@@ -20,7 +20,9 @@ namespace survey.ecssr.Controllers
             
             var survey = _applicationDbContext.Survey.FirstOrDefault(s => s.Id == 1);
 
-            var query = _applicationDbContext.Question.Where(q => !q.IsDeleted)
+            var query = _applicationDbContext
+                .Question
+                .Where(q => !q.IsDeleted)
                 .ToList();
 
             var options = _applicationDbContext.Options.ToList();
