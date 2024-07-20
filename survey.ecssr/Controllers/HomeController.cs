@@ -17,7 +17,7 @@ namespace survey.ecssr.Controllers
 
         public IActionResult Index()
         {
-            
+
             var survey = _applicationDbContext.Survey.FirstOrDefault(s => s.Id == 1);
 
             var query = _applicationDbContext
@@ -45,17 +45,80 @@ namespace survey.ecssr.Controllers
                         Id = aa.Id,
                         Text = aa.Text,
                         QuestionId = aa.QuestionId,
+                        HasExtraComment = aa.HasExtraComment
                     }).ToList()
                 })
                 .OrderBy(o => o.DisplayOrder)
                 .ToList()
             };
+
             return View(data);
         }
         [HttpPost]
         public IActionResult Index(SurveyViewModel model)
         {
-           return View(model);
+            var response = new Response
+            {
+                CreatedDate = DateTime.UtcNow,
+                SurveyId = model.Id
+            };
+
+            _applicationDbContext.Response.Add(response);
+            _applicationDbContext.SaveChanges();
+
+            List<Answer> answers = new List<Answer>();
+
+            foreach (var question in model.QuestionViewModel)
+            {
+
+                if (question.ControlTypeId == (int)ControlTypes.SingleLineTextBox)
+                {
+                    answers.Add(new Answer
+                    {
+                        OptionId = null,
+                        AnswerValue = question.SelctedAnswer,
+                        QuestionId = question.Id,
+                        ResponseId = response.Id
+                    });
+                }
+                else if (question.ControlTypeId == (int)ControlTypes.YesOrNo)
+                {
+                    var optId = Convert.ToInt32(question.SelctedAnswer);
+                    var opts = question.OptionsViewModel.FirstOrDefault(op => op.Id == optId);
+                    if (opts != null)
+                    {
+                        answers.Add(new Answer
+                        {
+                            OptionId = opts.Id,
+                            AnswerValue = opts.Text,
+                            QuestionId = question.Id,
+                            ResponseId = response.Id
+                        });
+                    }
+
+                }
+                else if (question.ControlTypeId == (int)ControlTypes.CheckBoxList)
+                {
+
+                    var opts = question.OptionsViewModel.Where(opt => opt.IsSelected).ToList();
+                    foreach (var opt in opts)
+                    {
+                        answers.Add(new Answer
+                        {
+                            OptionId = opt.Id,
+                            AnswerValue = opt.Text,
+                            ExtraValue = opt.ExtraComments,
+                            QuestionId = question.Id,
+                            ResponseId = response.Id
+                        });
+                    }
+                }
+
+            }
+            _applicationDbContext.Answer.AddRange(answers);
+            _applicationDbContext.SaveChanges();
+
+            return View(model);
         }
         public IActionResult Privacy()
         {

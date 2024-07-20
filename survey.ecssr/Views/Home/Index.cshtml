@@ -12,6 +12,8 @@
 <div>
     <form action="/Home/Index" method="post">
         <input type="hidden" asp-for="@Model.Title" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
         @for (var i = 0; i < Model.QuestionViewModel.Count(); i++)
         {
             var question = Model.QuestionViewModel[i];
@@ -21,9 +23,11 @@
                     <label>@question.Text</label> <br />
                 }
 
+                <input type="hidden" asp-for="@Model.Id" />
                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].Id " />
                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].Text" />
                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].SurveyId" />
+                <input type="hidden" asp-for="@Model.QuestionViewModel[i].ControlTypeId" />
 
                 <div class="answer">
                     @switch (question.ControlTypeId)
@@ -35,10 +39,16 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
+
                                 <label>
-                                    <input type="text" name="@("ControlList["+question.OptionsViewModel[j].Id+"].ControlValue")" id="@question.OptionsViewModel[j].Id" value="@question.OptionsViewModel[j].Text" />
+                                    <input asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
                                     @question.OptionsViewModel[j].Text
                                 </label>
+
+                                <span asp-validation-for="@Model.QuestionViewModel[i].SelctedAnswer" class="text-danger"></span>
+
+                                @* <input asp-for="@Model.QuestionViewModel[i].SelctedAnswer" formnovalidate="formnovalidate" class="form-control" />
+ *@
                             }
 
                             break;
@@ -52,10 +62,16 @@
 
 
                                 <label>
-                                    <input type="checkbox"
-                                           name="selectedAns"
-                                           value="@question.OptionsViewModel[j].Id" /> @question.OptionsViewModel[j].Text
+                                    @* <input type="checkbox"
+                    name="selectedAns"
+                    value="@question.OptionsViewModel[j].Id" /> @question.OptionsViewModel[j].Text *@
+                                    <input type="checkbox" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" required /> @question.OptionsViewModel[j].Text
                                 </label>
+
+                                @if (question.OptionsViewModel[j].HasExtraComment)
+                                {
+                                    <input asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" required />
+                                }
                             }
 
                             break;
@@ -67,8 +83,9 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
                                 <label>
-                                    <input type="radio" name="@question.OptionsViewModel[j].QuestionId"
-                                           asp-for='@Model.QuestionViewModel[i].SelctedAnswer' value="@question.OptionsViewModel[j].Id" />
+                                    @*  <input type="radio" name="@question.OptionsViewModel[j].QuestionId"
+                    asp-for='@Model.QuestionViewModel[i].SelctedAnswer' value="@question.OptionsViewModel[j].Id" /> *@
+                                    <input type="radio" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
                                     @question.OptionsViewModel[j].Text
                                 </label>
                             }

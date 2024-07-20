@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace survey.ecssr.Models
@@ -14,5 +15,6 @@ namespace survey.ecssr.Models
         public DbSet<Options> Options { get; set; } = null!;
         public DbSet<ControlType> ControlType { get; set; } = null!;
         public DbSet<Answer> Answer { get; set; } = null!;
+        public DbSet<Response> Response { get; set; } = null!;
     }
 }
