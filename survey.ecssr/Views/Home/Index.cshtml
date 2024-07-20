@@ -1,11 +1,5 @@
 ﻿@model SurveyViewModel
 
-
-@* <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div> *@
-
 <div class="row">
     <p>
         @Model.Title
@@ -14,20 +8,79 @@
         @Model.Description
     </p>
 </div>
+
 <div>
-    <form action="/Home/Survey" method="post">
+    <form action="/Home/Index" method="post">
         <input type="hidden" asp-for="@Model.Title" />
         @for (var i = 0; i < Model.QuestionViewModel.Count(); i++)
         {
-            var question = Model.QuestionViewModel[i].Text;
+            var question = Model.QuestionViewModel[i];
 
             <div class="question">
                 @{
-                    <label>@question</label> <br />
-                 }
-              <div class="answer">
-                  
-              </div>
+                    <label>@question.Text</label> <br />
+                }
+
+                <input type="hidden" asp-for="@Model.QuestionViewModel[i].Id " />
+                <input type="hidden" asp-for="@Model.QuestionViewModel[i].Text" />
+                <input type="hidden" asp-for="@Model.QuestionViewModel[i].SurveyId" />
+
+                <div class="answer">
+                    @switch (question.ControlTypeId)
+                    {
+                        case (int)ControlTypes.SingleLineTextBox:
+
+                            for (int j = 0; j < question.OptionsViewModel.Count; j++)
+                            {
+                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
+                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
+
+                                <label>
+                                    <input type="text" name="@("ControlList["+question.OptionsViewModel[j].Id+"].ControlValue")" id="@question.OptionsViewModel[j].Id" value="@question.OptionsViewModel[j].Text" />
+                                    @question.OptionsViewModel[j].Text
+                                </label>
+                            }
+
+                            break;
+                        case (int)ControlTypes.MultiLineTextBox:
+                            break;
+                        case (int)ControlTypes.CheckBoxList:
+                            for (int j = 0; j < question.OptionsViewModel.Count; j++)
+                            {
+                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
+                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
+
+
+                                <label>
+                                    <input type="checkbox"
+                                           name="selectedAns"
+                                           value="@question.OptionsViewModel[j].Id" /> @question.OptionsViewModel[j].Text
+                                </label>
+                            }
+
+                            break;
+                        case (int)ControlTypes.YesOrNo:
+
+                            for (int j = 0; j < question.OptionsViewModel.Count; j++)
+                            {
+                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
+                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
+
+                                <label>
+                                    <input type="radio" name="@question.OptionsViewModel[j].QuestionId"
+                                           asp-for='@Model.QuestionViewModel[i].SelctedAnswer' value="@question.OptionsViewModel[j].Id" />
+                                    @question.OptionsViewModel[j].Text
+                                </label>
+                            }
+                            break;
+                        case (int)ControlTypes.SingleSelect:
+
+                            break;
+                        case (int)ControlTypes.MultiSelect:
+                            break;
+                    }
+
+                </div>
             </div>
 
         }

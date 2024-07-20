@@ -13,17 +13,18 @@ public class QuestionViewModel
     public int SurveyId { get; set; }
     public string Text { get; set; }
     public int DisplayOrder { get; set; }
-
+    public string SelctedAnswer { get; set; }
     public bool IsDeleted { get; set; }
+    public int? ControlTypeId { get; set; }
 
-    public List<AnswerViewModel> AnswerViewModel { get; set; }
+    public List<OptionsViewModel> OptionsViewModel { get; set; }
 }
 
-public class AnswerViewModel
+public class OptionsViewModel
 {
     public int Id { get; set; }
     public int QuestionId { get; set; }
-    public string Text { get; set; }
+    public string? Text { get; set; }
     public bool IsDeleted { get; set; }
 }
 

@@ -17,51 +17,44 @@ namespace survey.ecssr.Controllers
 
         public IActionResult Index()
         {
-            //var query = from s in _applicationDbContext.Survey
-            //            join q in _applicationDbContext.Question
-            //            on s.Id equals q.SurveyId
-            //            join a in _applicationDbContext.Answer
-            //            on q.Id equals a.QuestionId
-            //            where !s.IsDeleted && !q.IsDeleted
-            //            select new SurveyViewModel
-            //            {
-            //                Title = s.Title,
-            //                Description = s.Description,
-            //            };
-            //var data = query.ToList();
+            
             var survey = _applicationDbContext.Survey.FirstOrDefault(s => s.Id == 1);
+
             var query = _applicationDbContext.Question.Where(q => !q.IsDeleted)
                 .ToList();
 
-            //var query = from q in _applicationDbContext.Question
-            //         join a in _applicationDbContext.Answer
-            //         on q.Id equals a.QuestionId
-            //         where !q.IsDeleted && q.SurveyId == 1
-            //         select q;
+            var options = _applicationDbContext.Options.ToList();
 
+            int id = survey.Id;
             var data = new SurveyViewModel
             {
-                Id = survey.Id,
+                Id = id,
                 Title = survey.Title,
                 Description = survey.Description,
                 QuestionViewModel = query
                 .Select(q => new QuestionViewModel
                 {
                     Text = q.Text,
+                    Id = q.Id,
                     DisplayOrder = q.DisplayOrder,
-                    //AnswerViewModel = _applicationDbContext.Answer
-                    //.Where(bb => bb.Id == q.Id && !bb.IsDeleted)
-                    //.Select(dd => new AnswerViewModel
-                    //{
-                    //    Text = dd.Text
-                    //}).ToList()
+                    ControlTypeId = q.ControlTypeId,
+                    OptionsViewModel = options.Where(aa => aa.QuestionId == q.Id).Select(aa => new OptionsViewModel
+                    {
+                        Id = aa.Id,
+                        Text = aa.Text,
+                        QuestionId = aa.QuestionId,
+                    }).ToList()
                 })
                 .OrderBy(o => o.DisplayOrder)
                 .ToList()
             };
             return View(data);
         }
-
+        [HttpPost]
+        public IActionResult Index(SurveyViewModel model)
+        {
+           return View(model);
+        }
         public IActionResult Privacy()
         {
             return View();

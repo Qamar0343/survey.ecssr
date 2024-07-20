@@ -4,15 +4,15 @@
     {
         public Question()
         {
-            this.Answers = new HashSet<Answer>();
+            this.Answers = new HashSet<Options>();
         }
         public int Id { get; set; }
         public int SurveyId { get; set; }
         public string Text { get; set; }
         public int DisplayOrder { get; set; }
         public bool IsDeleted { get; set; }
-
-        public virtual ICollection<Answer> Answers { get; set; }
+        public int? ControlTypeId { get; set; }
+        public virtual ICollection<Options> Answers { get; set; }
         public virtual Survey Survey { get; set; }
     }
 }
