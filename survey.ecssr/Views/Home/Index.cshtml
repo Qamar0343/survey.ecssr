@@ -1,0 +1,37 @@
+﻿@model SurveyViewModel
+
+
+@* <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div> *@
+
+<div class="row">
+    <p>
+        @Model.Title
+    </p>
+    <p>
+        @Model.Description
+    </p>
+</div>
+<div>
+    <form action="/Home/Survey" method="post">
+        <input type="hidden" asp-for="@Model.Title" />
+        @for (var i = 0; i < Model.QuestionViewModel.Count(); i++)
+        {
+            var question = Model.QuestionViewModel[i].Text;
+
+            <div class="question">
+                @{
+                    <label>@question</label> <br />
+                 }
+              <div class="answer">
+                  
+              </div>
+            </div>
+
+        }
+        <input type="submit" value"Submit" />
+    </form>
+</div>
+
