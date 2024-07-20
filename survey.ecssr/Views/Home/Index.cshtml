@@ -18,6 +18,9 @@
         {
             var question = Model.QuestionViewModel[i];
 
+            <div class="row">
+                <label class="text-blue">@question.ExtraText</label> <br />
+            </div>
             <div class="question">
                 @{
                     <label>@question.Text</label> <br />
@@ -40,12 +43,18 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
 
-                                <label>
+                                @* <label>
                                     <input asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
                                     @question.OptionsViewModel[j].Text
-                                </label>
+                                </label> *@
 
-                                <span asp-validation-for="@Model.QuestionViewModel[i].SelctedAnswer" class="text-danger"></span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <input class="form-control" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
+                                        <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
+                                    </div>
+                                    
+                                </div>
 
                                 @* <input asp-for="@Model.QuestionViewModel[i].SelctedAnswer" formnovalidate="formnovalidate" class="form-control" />
  *@
@@ -62,20 +71,26 @@
 
 
                                 <label>
-                                    @* <input type="checkbox"
-                    name="selectedAns"
-                    value="@question.OptionsViewModel[j].Id" /> @question.OptionsViewModel[j].Text *@
-                                    <input type="checkbox" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" required /> @question.OptionsViewModel[j].Text
+                                    <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" required /> @question.OptionsViewModel[j].Text
                                 </label>
+
+                               
 
                                 @if (question.OptionsViewModel[j].HasExtraComment)
                                 {
-                                    <input asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" required />
+                                    @* <input asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" required /> *@
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <input class="form-control" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
+                                        </div>
+
+                                    </div>
                                 }
                             }
 
                             break;
-                        case (int)ControlTypes.YesOrNo:
+                        case (int)ControlTypes.RadioButton:
 
                             for (int j = 0; j < question.OptionsViewModel.Count; j++)
                             {
@@ -85,9 +100,11 @@
                                 <label>
                                     @*  <input type="radio" name="@question.OptionsViewModel[j].QuestionId"
                     asp-for='@Model.QuestionViewModel[i].SelctedAnswer' value="@question.OptionsViewModel[j].Id" /> *@
-                                    <input type="radio" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
+                                    <input type="radio" class="form-check-input" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
                                     @question.OptionsViewModel[j].Text
                                 </label>
+
+
                             }
                             break;
                         case (int)ControlTypes.SingleSelect:
@@ -104,4 +121,6 @@
         <input type="submit" value"Submit" />
     </form>
 </div>
+
+
 

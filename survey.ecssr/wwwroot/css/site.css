@@ -17,3 +17,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.text-blue {
+    color:blue;
+    font-weight:bold;
+}

@@ -40,6 +40,7 @@ namespace survey.ecssr.Controllers
                     Id = q.Id,
                     DisplayOrder = q.DisplayOrder,
                     ControlTypeId = q.ControlTypeId,
+                    ExtraText = q.ExtraText,
                     OptionsViewModel = options.Where(aa => aa.QuestionId == q.Id).Select(aa => new OptionsViewModel
                     {
                         Id = aa.Id,
@@ -81,7 +82,7 @@ namespace survey.ecssr.Controllers
                         ResponseId = response.Id
                     });
                 }
-                else if (question.ControlTypeId == (int)ControlTypes.YesOrNo)
+                else if (question.ControlTypeId == (int)ControlTypes.RadioButton)
                 {
                     var optId = Convert.ToInt32(question.SelctedAnswer);
                     var opts = question.OptionsViewModel.FirstOrDefault(op => op.Id == optId);
