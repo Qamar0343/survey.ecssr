@@ -42,12 +42,14 @@ namespace survey.ecssr.Controllers
                     DisplayOrder = q.DisplayOrder,
                     ControlTypeId = q.ControlTypeId,
                     ExtraText = q.ExtraText,
+                    StepNumber = q.StepNumber,
                     OptionsViewModel = options.Where(aa => aa.QuestionId == q.Id).Select(aa => new OptionsViewModel
                     {
                         Id = aa.Id,
                         Text = aa.Text,
                         QuestionId = aa.QuestionId,
-                        HasExtraComment = aa.HasExtraComment
+                        HasExtraComment = aa.HasExtraComment,
+                        HasExtraComment2 = aa.HasExtraComment2
                     }).ToList()
                 })
                 .OrderBy(o => o.DisplayOrder)
@@ -97,6 +99,8 @@ namespace survey.ecssr.Controllers
                         {
                             OptionId = opts.Id,
                             AnswerValue = opts.Text,
+                            ExtraValue = opts.ExtraComments,
+                            ExtraValue2 = opts.ExtraComments2,
                             QuestionId = question.Id,
                             ResponseId = response.Id
                         });
@@ -114,6 +118,7 @@ namespace survey.ecssr.Controllers
                             OptionId = opt.Id,
                             AnswerValue = opt.Text,
                             ExtraValue = opt.ExtraComments,
+                            ExtraValue2 = opt.ExtraComments2,
                             QuestionId = question.Id,
                             ResponseId = response.Id
                         });

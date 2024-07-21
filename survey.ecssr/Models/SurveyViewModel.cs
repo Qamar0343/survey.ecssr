@@ -21,6 +21,8 @@ public class QuestionViewModel
     public bool IsDeleted { get; set; }
     public int? ControlTypeId { get; set; }
 
+    public int? StepNumber { get; set; }
+
     public string? ExtraText { get; set; }
 
 
@@ -38,7 +40,11 @@ public class OptionsViewModel
 
     public string ExtraComments { get; set; }
 
+    public string ExtraComments2 { get; set; }
+
     public bool HasExtraComment { get; set; }
+
+    public bool HasExtraComment2 { get; set; }
 
 }
 public class AnswerViewModel

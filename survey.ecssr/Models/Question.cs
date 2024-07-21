@@ -1,4 +1,6 @@
-﻿namespace survey.ecssr.Models
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace survey.ecssr.Models
 {
     public class Question
     {
@@ -13,6 +15,7 @@
         public int DisplayOrder { get; set; }
         public bool IsDeleted { get; set; }
         public int? ControlTypeId { get; set; }
+        public int? StepNumber { get; set; }
         public virtual ICollection<Options> Answers { get; set; }
         public virtual Survey Survey { get; set; }
     }

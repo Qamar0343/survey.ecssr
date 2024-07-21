@@ -4,23 +4,23 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .text-blue {
-    color:blue;
-    font-weight:bold;
+    color: blue;
+    font-weight: bold;
 }
 
 @font-face {
@@ -118,5 +118,30 @@ body {
     font-weight: normal;
     font-style: normal;
 }
-  
-  
+
+
+.table {
+    border: 1px solid #e0d8d8;
+}
+
+    .table > :not(caption) > * > * {
+        border-left: 1px solid #e0d8d8;
+    }
+
+.add-flex-with-td {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.someInput {
+    flex: 1;
+}
+
+.add-flex-direction {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 auto;
+    flex-direction: column;
+}

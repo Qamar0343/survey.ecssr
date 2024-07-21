@@ -18,91 +18,108 @@
         {
             var question = Model.QuestionViewModel[i];
 
-            <div class="row">
-                <label class="text-blue">@question.ExtraText</label> <br />
-            </div>
-            <div class="row">
-                @{
-                    <div class="col-md-12">
-                        <label>@question.Text</label>
-                    </div>
-                }
+            <input type="hidden" asp-for="@Model.Id" />
+            <input type="hidden" asp-for="@Model.QuestionViewModel[i].Id " />
+            <input type="hidden" asp-for="@Model.QuestionViewModel[i].Text" />
+            <input type="hidden" asp-for="@Model.QuestionViewModel[i].SurveyId" />
+            <input type="hidden" asp-for="@Model.QuestionViewModel[i].ControlTypeId" />
 
-                <input type="hidden" asp-for="@Model.Id" />
-                <input type="hidden" asp-for="@Model.QuestionViewModel[i].Id " />
-                <input type="hidden" asp-for="@Model.QuestionViewModel[i].Text" />
-                <input type="hidden" asp-for="@Model.QuestionViewModel[i].SurveyId" />
-                <input type="hidden" asp-for="@Model.QuestionViewModel[i].ControlTypeId" />
+            <div class="row">
+                <div class="col-md-12">
+                    @{
+                        <span class="text-blue">@question.ExtraText</span>
+                    }
+                </div>
 
-                <div class="answer">
+                <div class="col-md-12">
+                    @{
+                        if(question.StepNumber > 0)
+                        {
+                            <span>@question.StepNumber .</span>
+                        }
+                        <span>@question.Text</span>
+                    }
+                </div>
+                <div class="col-md-12">
                     @switch (question.ControlTypeId)
                     {
-                        case (int)ControlTypes.SingleLineTextBox:
-
-                            for (int j = 0; j < question.OptionsViewModel.Count; j++)
-                            {
-                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
-                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
-
-                                <div class="col-md-8">
-                                    <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" required />
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
-                                </div>
-
-                            }
-
-                            break;
-                        case (int)ControlTypes.MultiLineTextBox:
-                            break;
-
-
-                        case (int)ControlTypes.CheckBoxList:
-                            for (int j = 0; j < question.OptionsViewModel.Count; j++)
-                            {
-                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
-                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
-
-
-                                <label>
-                                    <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" /> @question.OptionsViewModel[j].Text
-                                </label>
-
-                                @if (question.OptionsViewModel[j].HasExtraComment)
-                                {
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
-                                        </div>
-
-                                    </div>
-                                }
-                            }
-
-                            break;
                         case (int)ControlTypes.RadioButton:
 
-                            for (int j = 0; j < question.OptionsViewModel.Count; j++)
-                            {
-                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
-                                <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
+                            <table class="table">
+                                <tr>
+                                    @for (int j = 0; j < question.OptionsViewModel.Count; j++)
+                                    {
+                                        <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
+                                        <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
-                                <label>
-                                    <input type="radio" class="form-check-input @(question.OptionsViewModel[j].Id)" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
-                                    @question.OptionsViewModel[j].Text
-                                </label>
-                            }
+                                        <td class="@(question.OptionsViewModel[j].HasExtraComment ? "add-flex-with-td" : "" )">
+                                            <label>
+                                                <input type="radio" class="form-check-input @(question.OptionsViewModel[j].Id)" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" />
+                                                <span>
+                                                    @(j + 1) .
+                                                </span>
+                                                <span>@question.OptionsViewModel[j].Text</span>
+                                            </label>
+
+                                            @if (question.OptionsViewModel[j].HasExtraComment)
+                                            {
+                                                <input class="form-control someInput" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
+                                            }
+
+                                        </td>
+
+                                    }
+                                </tr>
+                            </table>
+                            break;
+                        case (int)ControlTypes.SingleLineTextBox:
+                            <table class="table">
+                                <tr>
+                                    @for (int j = 0; j < question.OptionsViewModel.Count; j++)
+                                    {
+                                        <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
+                                        <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
+
+                                        <td>
+                                            <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
+                                            <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
+                                        </td>
+                                    }
+                                </tr>
+                            </table>
                             break;
 
+                        case (int)ControlTypes.CheckBoxList:
+                            <table class="table">
+                                <tr>
+                                    @for (int j = 0; j < question.OptionsViewModel.Count; j++)
+                                    {
+                                    <tr>
+                                        <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
+                                        <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
+                                        <td>
+                                            <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" />
+                                            <label>@question.OptionsViewModel[j].Text</label>
+                                        </td>
 
-                        case (int)ControlTypes.SingleSelect:
-                            break;
+                                            @if (question.OptionsViewModel[j].HasExtraComment)
+                                            {
+                                            <td>
+                                                <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
+                                            </td>
+                                            }
+                                            @if (question.OptionsViewModel[j].HasExtraComment2)
+                                            {
+                                            <td>
+                                                <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments2" />
+                                            </td>
+                                            }
+                                    </tr>
+                                    }
 
-                        case (int)ControlTypes.MultiSelect:
+                            </table>
                             break;
                     }
-
                 </div>
             </div>
 
@@ -111,4 +128,22 @@
     </form>
 </div>
 
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".extra-action").click(function () {
+                // $(this).hide();
+                if (this.checked && this.value == '52') {
+                    for (let i = 18; i <= 35; i++) {
+                        $(".main_" + i).hide();
+                    }
+                } else {
+                    for (let i = 18; i <= 35; i++) {
+                        $(".main_" + i).show();
+                    }
+                }
+            });
+        });
+    </script>
+}
 
