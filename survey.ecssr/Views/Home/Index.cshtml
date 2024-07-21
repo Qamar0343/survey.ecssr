@@ -12,7 +12,7 @@
 <div>
     <form action="/Home/Index" method="post">
         <input type="hidden" asp-for="@Model.Title" />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="message-error"></div>
 
         @for (var i = 0; i < Model.QuestionViewModel.Count(); i++)
         {
@@ -45,7 +45,7 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
                                 <div class="col-md-8">
-                                    <input class="form-control" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
+                                    <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" required />
                                 </div>
                                 <div class="col-md-4">
                                     <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
@@ -66,14 +66,14 @@
 
 
                                 <label>
-                                    <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" required /> @question.OptionsViewModel[j].Text
+                                    <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" /> @question.OptionsViewModel[j].Text
                                 </label>
 
                                 @if (question.OptionsViewModel[j].HasExtraComment)
                                 {
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <input class="form-control" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
+                                            <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
                                         </div>
 
                                     </div>

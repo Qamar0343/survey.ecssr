@@ -6,7 +6,7 @@ public class SurveyViewModel
     public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-
+    public bool FormSubmitted { get; set; }
     public List<QuestionViewModel> QuestionViewModel { get; set; }
 }
 public class QuestionViewModel

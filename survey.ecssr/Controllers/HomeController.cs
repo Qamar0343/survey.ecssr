@@ -33,6 +33,7 @@ namespace survey.ecssr.Controllers
                 Id = id,
                 Title = survey.Title,
                 Description = survey.Description,
+                FormSubmitted = false,
                 QuestionViewModel = query
                 .Select(q => new QuestionViewModel
                 {
@@ -58,6 +59,10 @@ namespace survey.ecssr.Controllers
         [HttpPost]
         public IActionResult Index(SurveyViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
             var response = new Response
             {
                 CreatedDate = DateTime.UtcNow,
@@ -119,13 +124,14 @@ namespace survey.ecssr.Controllers
             _applicationDbContext.Answer.AddRange(answers);
             _applicationDbContext.SaveChanges();
 
-            return View(model);
+            model.FormSubmitted = true;
+            return RedirectToAction("Success");
         }
-        public IActionResult Privacy()
+        public IActionResult Success()
         {
             return View();
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
