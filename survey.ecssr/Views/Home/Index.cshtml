@@ -44,20 +44,6 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Id " />
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
-
-                                @* <label>
-                <input asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
-                @question.OptionsViewModel[j].Text
-                </label> *@
-
-                                @* <div class="form-row">
-                <div class="form-group col-md-6">
-                <input class="form-control" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
-                <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
-                </div>
-                </div> *@
-
-
                                 <div class="col-md-8">
                                     <input class="form-control" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" />
                                 </div>
@@ -65,14 +51,13 @@
                                     <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
                                 </div>
 
-
-                                @* <input asp-for="@Model.QuestionViewModel[i].SelctedAnswer" formnovalidate="formnovalidate" class="form-control" />
-                *@
                             }
 
                             break;
                         case (int)ControlTypes.MultiLineTextBox:
                             break;
+
+
                         case (int)ControlTypes.CheckBoxList:
                             for (int j = 0; j < question.OptionsViewModel.Count; j++)
                             {
@@ -84,12 +69,8 @@
                                     <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" required /> @question.OptionsViewModel[j].Text
                                 </label>
 
-
-
                                 @if (question.OptionsViewModel[j].HasExtraComment)
                                 {
-                                    @* <input asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" required /> *@
-
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <input class="form-control" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
@@ -108,18 +89,16 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
                                 <label>
-                                    @*  <input type="radio" name="@question.OptionsViewModel[j].QuestionId"
-                    asp-for='@Model.QuestionViewModel[i].SelctedAnswer' value="@question.OptionsViewModel[j].Id" /> *@
-                                    <input type="radio" class="form-check-input" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
+                                    <input type="radio" class="form-check-input @(question.OptionsViewModel[j].Id)" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
                                     @question.OptionsViewModel[j].Text
                                 </label>
-
-
                             }
                             break;
-                        case (int)ControlTypes.SingleSelect:
 
+
+                        case (int)ControlTypes.SingleSelect:
                             break;
+
                         case (int)ControlTypes.MultiSelect:
                             break;
                     }
@@ -131,9 +110,5 @@
         <input type="submit" value"Submit" />
     </form>
 </div>
-
-<script>
-
-</script>
 
 
