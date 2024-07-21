@@ -1,7 +1,7 @@
 ﻿@model SurveyViewModel
 
 <div class="row">
-    <p>
+    <p class="text-center">
         @Model.Title
     </p>
     <p>
@@ -17,14 +17,14 @@
         @for (var i = 0; i < Model.QuestionViewModel.Count(); i++)
         {
             var question = Model.QuestionViewModel[i];
-
-            <div class="row">
-                <label class="text-blue">@question.ExtraText</label> <br />
+            <div class="row mt-2 mb-2 extratext">
+                <label class="text-blue">@question.ExtraText</label> 
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 @{
-                    <div class="col-md-12">
-                        <label>@question.Text</label>
+                    <div class="col-md-12 mb-2">
+                        <label>
+                            <strong>@question.Text</strong></label>
                     </div>
                 }
 
@@ -34,7 +34,7 @@
                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].SurveyId" />
                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].ControlTypeId" />
 
-                <div class="answer">
+                <div class="answer d-flex flex-column">
                     @switch (question.ControlTypeId)
                     {
                         case (int)ControlTypes.SingleLineTextBox:
@@ -47,8 +47,13 @@
                                 <div class="col-md-8">
                                     <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" required />
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="@question.OptionsViewModel[j].Text">@question.OptionsViewModel[j].Text</label>
+                                <div class="col-md-12 mb-2">
+                                    <label for="@question.OptionsViewModel[j].Text">
+                                        <strong>
+                                            @question.OptionsViewModel[j].Text
+                                        </strong>
+                                        
+                                    </label>
                                 </div>
 
                             }
@@ -65,13 +70,13 @@
                                 <input type="hidden" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].Text" />
 
 
-                                <label>
+                                <label class="mt-2">
                                     <input type="checkbox" class="form-check-input" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].IsSelected" /> @question.OptionsViewModel[j].Text
                                 </label>
 
                                 @if (question.OptionsViewModel[j].HasExtraComment)
                                 {
-                                    <div class="form-row">
+                                    <div class="form-row mt-2 mb-2">
                                         <div class="form-group col-md-6">
                                             <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
                                         </div>
@@ -92,6 +97,16 @@
                                     <input type="radio" class="form-check-input @(question.OptionsViewModel[j].Id)" asp-for="@Model.QuestionViewModel[i].SelctedAnswer" value="@question.OptionsViewModel[j].Id" required />
                                     @question.OptionsViewModel[j].Text
                                 </label>
+
+                                @if (question.OptionsViewModel[j].HasExtraComment)
+                                {
+                                    <div class="form-row mt-2 mb-2">
+                                        <div class="form-group col-md-6">
+                                            <input class="form-control" type="text" asp-for="@Model.QuestionViewModel[i].OptionsViewModel[j].ExtraComments" />
+                                        </div>
+
+                                    </div>
+                                }
                             }
                             break;
 
@@ -107,8 +122,13 @@
             </div>
 
         }
-        <input type="submit" value"Submit" />
+        <input class="btn btn-dark" type="submit" value"submit" />
     </form>
+
+    <p class="text-center">
+        نشكر لكم حسن تعاونكم
+    </p>
+
 </div>
 
 
